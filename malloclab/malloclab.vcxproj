@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{07b196ea-50fd-4ffd-9401-4d02167b25ad}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>malloclab</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{FC1A4D80-50E9-41DA-9192-61C0DBAA00D2}</LinuxProjectType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteBuildCommandLine>cd ~/projects/malloclab; make;</RemoteBuildCommandLine>
+    <RemoteReBuildCommandLine>cd ~/projects/malloclab; make clean; make</RemoteReBuildCommandLine>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\clock.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm-naive.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm-textbook.c" />
+    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm.c" />
+    <ClCompile Include="mm-original.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\clock.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\config.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\contracts.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\mm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\clock.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.o" />
+    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\mm.o" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\Desktop\malloclab-handout\Makefile" />
+    <None Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver" />
+    <None Include="..\..\..\..\..\Desktop\malloclab-handout\README" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemotePostBuildEvent>
+      <Command>cd ~/projects/malloclab; ./mdriver</Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
