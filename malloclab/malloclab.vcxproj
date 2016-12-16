@@ -71,40 +71,41 @@
     <RemoteReBuildCommandLine>cd ~/projects/malloclab; make clean; make</RemoteReBuildCommandLine>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\clock.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm-naive.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm-textbook.c" />
-    <ClCompile Include="..\..\..\..\..\Desktop\malloclab-handout\mm.c" />
+    <ClCompile Include="clock.c" />
+    <ClCompile Include="fcyc.c" />
+    <ClCompile Include="fsecs.c" />
+    <ClCompile Include="ftimer.c" />
+    <ClCompile Include="mdriver.c" />
+    <ClCompile Include="memlib.c" />
+    <ClCompile Include="mm-naive.c" />
     <ClCompile Include="mm-original.c" />
+    <ClCompile Include="mm-ref.c" />
+    <ClCompile Include="mm-textbook.c" />
+    <ClCompile Include="mm.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\clock.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\config.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\contracts.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\malloclab-handout\mm.h" />
+    <ClInclude Include="clock.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="contracts.h" />
+    <ClInclude Include="fcyc.h" />
+    <ClInclude Include="fsecs.h" />
+    <ClInclude Include="ftimer.h" />
+    <ClInclude Include="memlib.h" />
+    <ClInclude Include="mm.h" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\clock.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\fcyc.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\fsecs.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\ftimer.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\memlib.o" />
-    <Object Include="..\..\..\..\..\Desktop\malloclab-handout\mm.o" />
+    <Object Include="clock.o" />
+    <Object Include="fcyc.o" />
+    <Object Include="fsecs.o" />
+    <Object Include="ftimer.o" />
+    <Object Include="mdriver.o" />
+    <Object Include="memlib.o" />
+    <Object Include="mm.o" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\Desktop\malloclab-handout\Makefile" />
-    <None Include="..\..\..\..\..\Desktop\malloclab-handout\mdriver" />
-    <None Include="..\..\..\..\..\Desktop\malloclab-handout\README" />
+    <None Include="Makefile" />
+    <None Include="mdriver" />
+    <None Include="README" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <RemotePostBuildEvent>
