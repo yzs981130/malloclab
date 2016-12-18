@@ -8,7 +8,7 @@
 * NOTE TO STUDENTS: Replace this header comment with your own header
 * comment that gives a high level description of your solution.
 */
-/* Use function delete_block to replace the original coalesce 
+/* Use function delete_block to replace the original coalesce
  * Use segregated list
  */
 #include <assert.h>
@@ -20,9 +20,9 @@
 #include "mm.h"
 #include "memlib.h"
 
-/* If you want debugging output, use the following macro.  When you hand
-* in, remove the #define DEBUG line. */
-#define DEBUG
+ /* If you want debugging output, use the following macro.  When you hand
+ * in, remove the #define DEBUG line. */
+ //#define DEBUG
 #ifdef DEBUG
 # define dbg_printf(...) printf(__VA_ARGS__)
 #else
@@ -50,33 +50,32 @@ static char *seg_list = 0;  /* Pointer to segment pointer blocks */
 							/* rounds up to the nearest multiple of ALIGNMENT */
 #define ALIGN(p) (((size_t)(p) + (ALIGNMENT-1)) & ~0x7)
 
-							/* Basic constants and macros */
+static int MAGICNUMBER = 168;
+/* Basic constants and macros */
 #define WSIZE       4       /* Word and header/footer size (bytes) */ 
 #define DSIZE       8       /* Double word size (bytes) */
-#define CHUNKSIZE  (1<<9)  /* Extend heap by this amount (bytes) */  
+#define CHUNKSIZE  MAGICNUMBER  /* Extend heap by this amount (bytes) */  
 
 #define MAX(x, y) ((x) > (y)? (x) : (y))  
 
-							/* Pack a size and allocated bit into a word */
+/* Pack a size and allocated bit into a word */
 #define PACK(size, alloc)  ((size) | (alloc)) 
 
-							/* Read and write a word at address p */
+/* Read and write a word at address p */
 #define GET(p)       (*(unsigned int *)(p))            
 #define PUT(p, val)  (*(unsigned int *)(p) = (val))    
 
-							/* Read the size and allocated fields from address p */
+/* Read the size and allocated fields from address p */
 #define GET_SIZE(p)  (GET(p) & ~0x7)                   
 #define GET_ALLOC(p) (GET(p) & 0x1)
-							/*Storing Previous block allocation and 2nd lsb*/
 #define GET_PREV_ALLOC(p) (GET(p) & 0x2)
-							/*Storing Next block allocation and 3rd lsb*/
 #define GET_NEXT_ALLOC(p) (GET(p) & 0x4)
 
-							/* Given block ptr bp, compute address of its header and footer */
+/* Given block ptr bp, compute address of its header and footer */
 #define HDRP(bp)       ((char *)(bp) - WSIZE)                      
 #define FTRP(bp)       ((char *)(bp) + GET_SIZE(HDRP(bp)) - DSIZE) 
 
-							/* Given block ptr bp, compute address of next and previous blocks */
+/* Given block ptr bp, compute address of next and previous blocks */
 #define NEXT_BLKP(bp)  ((char *)(bp) + GET_SIZE(((char *)(bp) - WSIZE))) 
 #define PREV_BLKP(bp)  ((char *)(bp) - GET_SIZE(((char *)(bp) - DSIZE))) 
 
@@ -92,13 +91,13 @@ static char *seg_list = 0;  /* Pointer to segment pointer blocks */
 
 
 							/* Functions definions */
-static inline void *extend_heap(size_t words);
-static inline void *find_fit_s(size_t asize);
-static inline void place(void *bp, size_t asize);
-static inline void *coalesce(void *bp);
-static inline void *add_block_to_free_list(void *bp);
-static inline void delete_block_from_free_list(void *bp);
-static inline unsigned int get_list(size_t asize);
+static  void *extend_heap(size_t words);
+static  void *find_fit_s(size_t asize);
+static  void place(void *bp, size_t asize);
+static  void *coalesce(void *bp);
+static  void *add_block_to_free_list(void *bp);
+static  void delete_block_from_free_list(void *bp);
+static  unsigned int get_list(size_t asize);
 
 
 
@@ -107,6 +106,8 @@ static inline unsigned int get_list(size_t asize);
 */
 int mm_init(void) {
 	/* initial empty seg list */
+	heap_listp = NULL;
+	seg_list = NULL;
 	if ((seg_list = mem_sbrk(CNT_OF_LIST * DSIZE)) == (void *)(-1))
 		return -1;
 	for (int i = 0; i < CNT_OF_LIST; i++)
@@ -233,7 +234,7 @@ void *calloc(size_t nmemb, size_t size) {
 
 
 /* Self define functions */
-static void inline *extend_heap(size_t words)
+static void  *extend_heap(size_t words)
 {
 	char *bp;
 	size_t size;
@@ -248,7 +249,7 @@ static void inline *extend_heap(size_t words)
 	PUT(FTRP(bp), PACK(size, 0));         /* Free block footer */
 	PUT(HDRP(NEXT_BLKP(bp)), PACK(0, 1)); /* New epilogue header */
 
-										  /* Coalesce if the previous block was free */
+	/* Coalesce if the previous block was free */
 	return add_block_to_free_list(bp);
 }
 
@@ -272,10 +273,23 @@ static int aligned(const void *p) {
 * mm_checkheap
 */
 void mm_checkheap(int lineno) {
+	if (lineno) {
+		dbg_printf("Heap (%p):\n", heap_listp);
+	}
+	if ((GET_SIZE(HDRP(heap_listp)) != DSIZE) || !GET_ALLOC(HDRP(heap_listp))) {
+		printf("prologue boom!\n");
+	}
+	char *bp = heap_listp;
+	while (GET_SIZE(HDRP(bp)) > 0)
+		bp = NEXT_BLKP(bp);
+
+	if ((GET_SIZE(HDRP(bp)) != 0) || !(GET_ALLOC(HDRP(bp)))) {
+		printf("epilogue boom!\n");
+	}
 }
 
 /* add delete the allocated block from free list */
-static inline void *coalesce(void *bp)
+static  void *coalesce(void *bp)
 {
 	size_t prev_alloc = GET_ALLOC(FTRP(PREV_BLKP(bp)));
 	size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
@@ -293,21 +307,20 @@ static inline void *coalesce(void *bp)
 		PUT(FTRP(bp), PACK(size, 0));
 	}
 
-	else if (!prev_alloc && next_alloc) {      /* Case 3 */
+	else if (!prev_alloc && next_alloc) {       /* Case 3 */
 		size += GET_SIZE(HDRP(PREV_BLKP(bp)));
 		/* delete the not allocated block from free list */
 		delete_block_from_free_list(PREV_BLKP(bp));
-		PUT(FTRP(PREV_BLKP(bp)), PACK(size, 0));
 		PUT(HDRP(PREV_BLKP(bp)), PACK(size, 0));
+		PUT(FTRP(PREV_BLKP(bp)), PACK(size, 0));
 		bp = PREV_BLKP(bp);
 	}
-
-	else {                                     /* Case 4 */
+	else {                                        /* Case 4 */
+		/* Both Previous and Next Block are not allocated */
 		size += GET_SIZE(HDRP(PREV_BLKP(bp))) +
 			GET_SIZE(FTRP(NEXT_BLKP(bp)));
-		/* delete the not allocated block from free list */
+		/* Remove both previous and next */
 		delete_block_from_free_list(PREV_BLKP(bp));
-		/* delete the not allocated block from free list */
 		delete_block_from_free_list(NEXT_BLKP(bp));
 		PUT(HDRP(PREV_BLKP(bp)), PACK(size, 0));
 		PUT(FTRP(NEXT_BLKP(bp)), PACK(size, 0));
@@ -316,7 +329,7 @@ static inline void *coalesce(void *bp)
 	return bp;
 }
 
-inline void *find_fit_s(size_t asize)
+void *find_fit_s(size_t asize)
 {
 	void *bp = 0;
 	unsigned int cnt = get_list(asize);
@@ -333,7 +346,7 @@ inline void *find_fit_s(size_t asize)
 }
 
 /* use LIFO to add block to free list */
-inline void *add_block_to_free_list(void * bp)
+void *add_block_to_free_list(void * bp)
 {
 	int cnt = 0;
 	bp = coalesce(bp);
@@ -343,16 +356,16 @@ inline void *add_block_to_free_list(void * bp)
 		SET_NEXTP(bp, NULL);
 	}
 	else {
-		SET_NEXTP(bp, GET_SEGI(seg_list, cnt));
 		SET_PREVP(bp, NULL);
 		SET_PREVP(GET_SEGI(seg_list, cnt), bp);
+		SET_NEXTP(bp, GET_SEGI(seg_list, cnt));
 	}
 	/* point to the new node*/
 	SET_SEGI(seg_list, cnt, bp);
 	return bp;
 }
 
-static inline void delete_block_from_free_list(void *bp)
+static  void delete_block_from_free_list(void *bp)
 {
 	int cnt = get_list(GET_SIZE(HDRP(bp)));
 	void *next = GET_NEXTP(bp);
@@ -374,7 +387,7 @@ static inline void delete_block_from_free_list(void *bp)
 	SET_NEXTP(bp, NULL);
 }
 
-inline unsigned int get_list(size_t asize)
+unsigned int get_list(size_t asize)
 {
 	if (asize <= 24)
 		return 0;
@@ -409,7 +422,7 @@ inline unsigned int get_list(size_t asize)
 }
 
 
-static inline void place(void *bp, size_t asize)
+static  void place(void *bp, size_t asize)
 {
 	size_t csize = GET_SIZE(HDRP(bp));
 	/* bp will be used in a few time */
